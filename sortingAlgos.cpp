@@ -131,20 +131,40 @@ public:
 
 template<typename T>
 class HeapSort{
-private:
-    T heap[1e3];
-    int size=1e3;
 public:
     HeapSort(T arr[], int n){
-        size = n;
         _sort_(arr,n);
     }
     void _sort_(T arr[],int n){
-        
+        for(int i=n/2-1; i>=0 ; i--)
+            heapify(arr,n,i);
+
+        for(int i=n-1 ; i>=0 ; i--){
+            T temp = arr[i];
+            arr[i] = arr[0];
+            arr[0] = temp;
+
+            heapify(arr,i,0);
+        }
+    }
+    void heapify(T arr[],int n,int root){
+        int largest = root;
+        int leftChild = 2*root+1;
+        int rightChild = 2*root+2;
+
+        if(leftChild<n && arr[leftChild]>arr[largest])
+            largest = leftChild;
+        if(rightChild<n && arr[rightChild]>arr[largest])
+            largest = rightChild;
+
+        if(largest!=root){
+            T temp = arr[root];
+            arr[root] = arr[largest];
+            arr[largest] = temp;
+            heapify(arr,n,largest);
+        }
     }
 };
-
-
 
 void _print_(int arr[],int n){
     for(int i=0 ; i<n ; i++){
@@ -161,6 +181,7 @@ int main(){
     // InsertionSort<int> i(arr,n);
     // MergeSort<int> m(arr,n);
     // QuickSort<int> q(arr,n);
+    // HeapSort<int> h(arr,n);
 
     _print_(arr,n);
 
